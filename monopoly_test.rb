@@ -34,4 +34,18 @@ class MonopolyTest  < Test::Unit::TestCase
       monopoly.play(andrzej)
     end
   end
+  def test_asking_for_moves
+    monopoly = new_monopoly_game
+    andrzej  = new_player
+    nthx     = new_player
+
+    monopoly.join(andrzej)
+    monopoly.join(nthx)
+
+    3.times { monopoly.play(andrzej) }
+    monopoly.ask_for_move(andrzej, nthx)
+    monopoly.answer_with_move(nthx, andrzej)
+    
+    monopoly.play(andrzej)
+  end
 end
