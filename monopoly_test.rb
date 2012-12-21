@@ -52,6 +52,6 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly = new_monopoly_game
     admin = Admin.new
     monopoly.make_admin(admin)
-    
+    monopoly.add_start_field
   end
 end
