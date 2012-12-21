@@ -44,11 +44,6 @@ module Monopoly
   class Move
   end
 
-  class MoveRequest
-    def initialize(from_player, to_player)
-    end
-  end
-
   class Admin
   end
 end
