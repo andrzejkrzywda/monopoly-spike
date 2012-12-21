@@ -5,7 +5,9 @@ include Monopoly
 
 class MonopolyTest  < Test::Unit::TestCase
   def new_monopoly_game
-    Game.new
+    monopoly = Game.new
+    monopoly.start()
+    return monopoly
   end
 
   def new_player

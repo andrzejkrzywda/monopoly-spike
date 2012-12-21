@@ -6,9 +6,19 @@ module Monopoly
       @move_requests = []
       @player_moves = {}
       @admins = []
+      @started = false
+    end
+
+    def not_started?
+      ! @started
+    end
+
+    def start
+      @started = true
     end
 
     def join(player)
+      raise NotStarted.new if not_started?
       @players << player
       @player_made_moves[player] = []
       @player_moves[player] = []
@@ -37,6 +47,10 @@ module Monopoly
   end
   class NoMoreMoves < Exception
   end
+
+  class NotStarted < Exception
+  end
+
   class Player
 
   end
