@@ -19,6 +19,7 @@ module Monopoly
 
     def join(player)
       raise NotStarted.new if not_started?
+      player.extend(MonopolyPlayer)
       @players << player
       @player_made_moves[player] = []
       @player_moves[player] = []
@@ -51,6 +52,8 @@ module Monopoly
   class NotStarted < Exception
   end
 
+  module MonopolyPlayer
+  end
   class Player
 
   end
