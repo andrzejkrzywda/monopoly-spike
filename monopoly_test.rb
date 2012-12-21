@@ -14,6 +14,13 @@ class MonopolyTest  < Test::Unit::TestCase
     Player.new
   end
 
+  def test_cant_join_if_not_started
+    monopoly = Game.new
+    assert_raises NotStarted do 
+      monopoly.join(new_player) 
+    end
+  end
+
   def test_game_allows_many_players
     monopoly = new_monopoly_game
     andrzej  = new_player
