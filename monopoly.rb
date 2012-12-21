@@ -31,6 +31,9 @@ module Monopoly
     def give_move(player, friend)
       @player_moves[friend] << Move.new
     end
+
+    def add_start_field
+    end
   end
   class NoMoreMoves < Exception
   end
