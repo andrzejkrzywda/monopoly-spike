@@ -50,8 +50,8 @@ class MonopolyTest  < Test::Unit::TestCase
 
   def test_admin
     monopoly = new_monopoly_game
-    admin = new Admin()
+    admin = Admin.new
     monopoly.make_admin(admin)
-
+    
   end
 end
