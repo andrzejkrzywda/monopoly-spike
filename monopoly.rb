@@ -27,7 +27,7 @@ module Monopoly
     def add_start_field
     end
   end
-  
+
   class NoMoreMoves < Exception
   end
 
@@ -37,8 +37,6 @@ module Monopoly
   module MonopolyPlayer
     def self.extended(user)
       @player_moves = []
-      @made_moves   = []
-      user.instance_variable_set("@player_made_moves", @made_moves)
       user.instance_variable_set("@player_moves",      @player_moves)
 
       3.times { @player_moves << Move.new }
@@ -49,7 +47,7 @@ module Monopoly
 
     def play
       raise NoMoreMoves if no_more_moves?
-      @player_made_moves << @player_moves.shift
+      @player_moves.shift
     end
 
     def give_move(friend)
