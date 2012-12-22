@@ -61,6 +61,26 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly = new_monopoly_game
     admin = Admin.new
     monopoly.make_admin(admin)
-    monopoly.add_start_field
+  end
+
+  def test_player_can_move_on_fields
+    monopoly = new_monopoly_game
+    andrzej  = new_player
+    nthx     = new_player
+    monopoly.join(andrzej)
+    monopoly.join(nthx)
+
+    admin = Admin.new
+    monopoly.make_admin(admin)
+    field_0 = Field.new
+    field_1 = Field.new
+    field_2 = Field.new
+    field_3 = Field.new
+    assert_equal(field_0, admin.player_field(andrzej))
+    andrzej.play(1)
+    assert_equal(field_1, admin.player_field(andrzej))
+    andrzej.play(3)
+    assert_equal(field_0, admin.player_field(andrzej))
+
   end
 end
