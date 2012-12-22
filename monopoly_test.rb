@@ -28,9 +28,9 @@ class MonopolyTest  < Test::Unit::TestCase
 
     monopoly.join(andrzej)
     monopoly.join(nthx)
-    monopoly.play(andrzej)
-    monopoly.play(nthx)
-    monopoly.play(nthx)
+    andrzej.play
+    nthx.play
+    nthx.play
   end
 
   def test_game_limits_moves_to_3
@@ -38,9 +38,9 @@ class MonopolyTest  < Test::Unit::TestCase
     andrzej  = new_player
     monopoly.join(andrzej)
 
-    3.times { monopoly.play(andrzej) }
+    3.times { andrzej.play }
     assert_raises NoMoreMoves do
-      monopoly.play(andrzej)
+      andrzej.play
     end
   end
   def test_asking_for_moves
@@ -51,10 +51,10 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly.join(andrzej)
     monopoly.join(nthx)
 
-    3.times { monopoly.play(andrzej) }
-    monopoly.give_move(nthx, andrzej)
+    3.times { andrzej.play }
+    nthx.give_move(andrzej)
 
-    monopoly.play(andrzej)
+    andrzej.play
   end
 
   def test_admin

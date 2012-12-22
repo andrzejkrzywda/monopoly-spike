@@ -2,9 +2,6 @@ module Monopoly
   class Game
     def initialize
       @players = []
-      @player_made_moves = {}
-      @move_requests = []
-      @player_moves = {}
       @admins = []
       @started = false
     end
@@ -21,31 +18,16 @@ module Monopoly
       raise NotStarted.new if not_started?
       player.extend(MonopolyPlayer)
       @players << player
-      @player_made_moves[player] = []
-      @player_moves[player] = []
-      3.times { @player_moves[player] << Move.new }
-    end
-
-    def play(player)
-      raise NoMoreMoves if no_more_moves?(player)
-      @player_made_moves[player] << @player_moves[player].shift
     end
 
     def make_admin(admin)
       @admins << admin
     end
 
-    def no_more_moves?(player)
-      @player_moves[player].length == 0
-    end
-
-    def give_move(player, friend)
-      @player_moves[friend] << Move.new
-    end
-
     def add_start_field
     end
   end
+  
   class NoMoreMoves < Exception
   end
 
@@ -53,6 +35,30 @@ module Monopoly
   end
 
   module MonopolyPlayer
+    def self.extended(user)
+      @player_moves = []
+      @made_moves   = []
+      user.instance_variable_set("@player_made_moves", @made_moves)
+      user.instance_variable_set("@player_moves",      @player_moves)
+
+      3.times { @player_moves << Move.new }
+    end
+    def no_more_moves?
+      @player_moves.length == 0
+    end
+
+    def play
+      raise NoMoreMoves if no_more_moves?
+      @player_made_moves << @player_moves.shift
+    end
+
+    def give_move(friend)
+      friend.add_move
+    end
+
+    def add_move
+      @player_moves << Move.new
+    end
   end
   class Player
 
