@@ -1,4 +1,4 @@
-script: rbtest monopoly_test.rb
+script: ruby monopoly_test.rb
 rvm:
   - 1.9.3
   - 1.9.2
