@@ -86,11 +86,14 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly.join(andrzej)
     monopoly.join(nthx)
 
-    assert_equal(field_0, monopoly.player_field(andrzej))
+    assert_on_field(monopoly, andrzej, field_0)
     andrzej.play(1)
-    assert_equal(field_1, monopoly.player_field(andrzej))
+    assert_on_field(monopoly, andrzej, field_1)
     andrzej.play(3)
-    assert_equal(field_0, monopoly.player_field(andrzej))
+    assert_on_field(monopoly, andrzej, field_0)
+  end
 
+  def assert_on_field(monopoly, player, field)
+    assert_equal(field, monopoly.player_field(player), "wrong field")
   end
 end
