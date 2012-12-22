@@ -4,7 +4,7 @@ module Monopoly
       @players = []
       @admins = []
       
-      @board = Board.new
+      extend(Board)
       @started = false
     end
 
@@ -16,34 +16,23 @@ module Monopoly
       @started = true
     end
 
-    def start_field
-      @board.start_field
-    end
-
-    def player_field(player)
-      @board.player_position(player)
-    end
-
     def join(player)
       raise NotStarted.new if not_started?
       player.extend(MonopolyPlayer)
       player.in_game(self)
-      @board.set_player_position(player, start_field)
+      
+      #FIXME role call directly
+      set_player_position(player, start_field)
+      
       @players << player
     end
 
-    def move_player_by(player, number)
-      @board.move_player_by(player, number)
-    end
 
     def make_admin(admin)
       @admins << admin
       admin.manages(self)
     end
 
-    def add_field(field)
-      @board.add_field(field)
-    end
   end
 
   class NoMoreMoves < Exception
@@ -83,10 +72,10 @@ module Monopoly
     end
   end
 
-  class Board
-    def initialize
-      @player_position = {}
-      @fields = []
+  module Board
+    def self.extended(base)
+      base.instance_variable_set("@player_position",   {})
+      base.instance_variable_set("@fields",   [])
     end
 
     def add_field(field)
@@ -97,7 +86,7 @@ module Monopoly
       @fields[0]
     end
 
-    def player_position(player)
+    def player_field(player)
       @player_position[player]
     end
 
