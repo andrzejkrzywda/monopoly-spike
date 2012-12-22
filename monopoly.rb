@@ -3,9 +3,9 @@ module Monopoly
     def initialize
       @players = []
       @admins = []
-      @fields = []
+      
+      @board = Board.new
       @started = false
-      @player_position = {}
     end
 
     def not_started?
@@ -17,27 +17,23 @@ module Monopoly
     end
 
     def start_field
-      @fields[0]
+      @board.start_field
     end
 
     def player_field(player)
-      @player_position[player]
+      @board.player_position(player)
     end
 
     def join(player)
       raise NotStarted.new if not_started?
       player.extend(MonopolyPlayer)
       player.in_game(self)
-      @player_position[player] = start_field
+      @board.set_player_position(player, start_field)
       @players << player
     end
 
     def move_player_by(player, number)
-      @player_position[player] = field_on_with_offset(@player_position[player], number)
-    end
-
-    def field_on_with_offset(field, offset)
-      @fields[(@fields.index(field) + offset) % @fields.length]
+      @board.move_player_by(player, number)
     end
 
     def make_admin(admin)
@@ -46,7 +42,7 @@ module Monopoly
     end
 
     def add_field(field)
-      @fields << field
+      @board.add_field(field)
     end
   end
 
@@ -86,6 +82,39 @@ module Monopoly
       @player_moves << Move.new
     end
   end
+
+  class Board
+    def initialize
+      @player_position = {}
+      @fields = []
+    end
+
+    def add_field(field)
+      @fields << field
+    end
+
+    def start_field
+      @fields[0]
+    end
+
+    def player_position(player)
+      @player_position[player]
+    end
+
+    def set_player_position(player, field)
+      @player_position[player] = field
+    end
+
+    def move_player_by(player, number)
+      @player_position[player] = field_on_with_offset(@player_position[player], number)
+    end
+
+    def field_on_with_offset(field, offset)
+      @fields[(@fields.index(field) + offset) % @fields.length]
+    end
+
+  end
+
   class Player
 
   end
