@@ -23,6 +23,7 @@ class MonopolyTest  < Test::Unit::TestCase
 
   def test_game_allows_many_players
     monopoly = new_monopoly_game
+    monopoly.add_field(Field.new)
     andrzej  = new_player
     nthx     = new_player
 
@@ -35,6 +36,7 @@ class MonopolyTest  < Test::Unit::TestCase
 
   def test_game_limits_moves_to_3
     monopoly = new_monopoly_game
+    monopoly.add_field(Field.new)
     andrzej  = new_player
     monopoly.join(andrzej)
 
@@ -45,6 +47,7 @@ class MonopolyTest  < Test::Unit::TestCase
   end
   def test_asking_for_moves
     monopoly = new_monopoly_game
+    monopoly.add_field(Field.new)
     andrzej  = new_player
     nthx     = new_player
 
@@ -59,16 +62,13 @@ class MonopolyTest  < Test::Unit::TestCase
 
   def test_admin
     monopoly = new_monopoly_game
+
     admin = Admin.new
     monopoly.make_admin(admin)
   end
 
   def test_player_can_move_on_fields
     monopoly = new_monopoly_game
-    andrzej  = new_player
-    nthx     = new_player
-    monopoly.join(andrzej)
-    monopoly.join(nthx)
 
     admin = Admin.new
     monopoly.make_admin(admin)
@@ -76,11 +76,21 @@ class MonopolyTest  < Test::Unit::TestCase
     field_1 = Field.new
     field_2 = Field.new
     field_3 = Field.new
-    assert_equal(field_0, admin.player_field(andrzej))
+    admin.add_field(field_0)
+    admin.add_field(field_1)
+    admin.add_field(field_2)
+    admin.add_field(field_3)
+
+    andrzej  = new_player
+    nthx     = new_player
+    monopoly.join(andrzej)
+    monopoly.join(nthx)
+
+    assert_equal(field_0, monopoly.player_field(andrzej))
     andrzej.play(1)
-    assert_equal(field_1, admin.player_field(andrzej))
+    assert_equal(field_1, monopoly.player_field(andrzej))
     andrzej.play(3)
-    assert_equal(field_0, admin.player_field(andrzej))
+    assert_equal(field_0, monopoly.player_field(andrzej))
 
   end
 end
