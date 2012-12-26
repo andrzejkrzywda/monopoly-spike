@@ -27,17 +27,17 @@ module Monopoly
 
 
   module MonopolyPlayer
-    def self.extended(user)
-      @player_moves = []
-      user.instance_variable_set("@player_moves",      @player_moves)
+
+    def player_moves
+      @player_moves ||= []
     end
 
     def no_more_moves?
-      @player_moves.length == 0
+      player_moves.length == 0
     end
 
     def take_life
-      @player_moves.shift
+      player_moves.shift
     end
 
     def play(dice_roll=0)
@@ -51,7 +51,7 @@ module Monopoly
     end
 
     def add_move
-      @player_moves << Move.new
+      player_moves << Move.new
     end
   end
 
