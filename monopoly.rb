@@ -1,45 +1,29 @@
 module Monopoly
-  class Game
-    def initialize
-      @players = []
-      @admins = []
-      
-      extend(Board)
-      @started = false
+  class MonopolyPlayGameUseCase
+    def initialize(players, board)
+      @players = players
+      @players.each { |player| player.extend(MonopolyPlayer)}
+      @board = board
     end
 
-    def not_started?
-      ! @started
+    def start_game
+      @players.each { |player| @board.set_initial_player_position(player) }
     end
 
-    def start
-      @started = true
+    def make_move(player, dice_roll=0)
+      raise NoMoreMoves if player.no_more_moves?
+      player.take_life
+      @board.move_player_by(player, dice_roll)
     end
 
-    def join(player)
-      raise NotStarted.new if not_started?
-      player.extend(MonopolyPlayer)
-      player.in_game(self)
-      
-      #FIXME role call directly
-      set_player_position(player, start_field)
-      
-      @players << player
+    def give_move(from_player, to_player)
+      to_player.add_move
     end
-
-
-    def make_admin(admin)
-      @admins << admin
-      admin.manages(self)
-    end
-
   end
 
   class NoMoreMoves < Exception
   end
 
-  class NotStarted < Exception
-  end
 
   module MonopolyPlayer
     def self.extended(user)
@@ -49,17 +33,17 @@ module Monopoly
       3.times { @player_moves << Move.new }
     end
 
-    def in_game(game)
-      @game = game
-    end
-
     def no_more_moves?
       @player_moves.length == 0
     end
 
+    def take_life
+      @player_moves.shift
+    end
+
     def play(dice_roll=0)
       raise NoMoreMoves if no_more_moves?
-      @player_moves.shift
+      take_life
       @game.move_player_by(self, dice_roll)
     end
 
@@ -71,11 +55,10 @@ module Monopoly
       @player_moves << Move.new
     end
   end
-
-  module Board
-    def self.extended(base)
-      base.instance_variable_set("@player_position",   {})
-      base.instance_variable_set("@fields",   [])
+  class Board
+    def initialize
+      @player_position = {}
+      @fields = []
     end
 
     def add_field(field)
@@ -88,6 +71,10 @@ module Monopoly
 
     def player_field(player)
       @player_position[player]
+    end
+
+    def set_initial_player_position(player)
+      set_player_position(player, start_field)
     end
 
     def set_player_position(player, field)
@@ -103,7 +90,7 @@ module Monopoly
     end
 
   end
-
+ 
   class Player
 
   end
@@ -114,12 +101,5 @@ module Monopoly
   class Field
   end
 
-  class Admin
-    def manages(game)
-      @game = game
-    end
-    def add_field(field)
-      @game.add_field(field)
-    end
-  end
+
 end
