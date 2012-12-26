@@ -8,6 +8,7 @@ module Monopoly
 
     def start_game
       @players.each { |player| @board.set_initial_player_position(player) }
+      @players.each { |player| 3.times { player.add_move } }
     end
 
     def make_move(player, dice_roll=0)
@@ -30,7 +31,7 @@ module Monopoly
       @player_moves = []
       user.instance_variable_set("@player_moves",      @player_moves)
 
-      3.times { @player_moves << Move.new }
+      
     end
 
     def no_more_moves?
@@ -55,50 +56,11 @@ module Monopoly
       @player_moves << Move.new
     end
   end
-  class Board
-    def initialize
-      @player_position = {}
-      @fields = []
-    end
 
-    def add_field(field)
-      @fields << field
-    end
-
-    def start_field
-      @fields[0]
-    end
-
-    def player_field(player)
-      @player_position[player]
-    end
-
-    def set_initial_player_position(player)
-      set_player_position(player, start_field)
-    end
-
-    def set_player_position(player, field)
-      @player_position[player] = field
-    end
-
-    def move_player_by(player, number)
-      @player_position[player] = field_on_with_offset(@player_position[player], number)
-    end
-
-    def field_on_with_offset(field, offset)
-      @fields[(@fields.index(field) + offset) % @fields.length]
-    end
-
-  end
- 
   class Player
-
   end
 
   class Move
-  end
-
-  class Field
   end
 
 
