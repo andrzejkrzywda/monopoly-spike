@@ -2,7 +2,7 @@ module Monopoly
   class MonopolyPlayGameUseCase
     def initialize(players, board)
       @players = players
-      @players.each { |player| player.extend(MonopolyPlayer)}
+      @players.each { |player| player.extend(Player)}
       @board = board
     end
 
@@ -26,7 +26,7 @@ module Monopoly
   end
 
 
-  module MonopolyPlayer
+  module Player
 
     def player_moves
       @player_moves ||= []
@@ -55,7 +55,7 @@ module Monopoly
     end
   end
 
-  class Player
+  class Person
   end
 
   class Move

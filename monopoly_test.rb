@@ -10,8 +10,8 @@ class MonopolyTest  < Test::Unit::TestCase
   def test_game_limits_moves_to_3
     board = Board.new
     board.add_field(Field.new)
-    andrzej  = Player.new
-    nthx     = Player.new
+    andrzej  = Person.new
+    nthx     = Person.new
     monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board)
     monopoly.start_game
 
@@ -27,8 +27,8 @@ class MonopolyTest  < Test::Unit::TestCase
   def TODO_test_players_get_points_when_they_meet_friends
     board = Board.new
     board.add_fields(16)
-    andrzej  = Player.new
-    nthx     = Player.new
+    andrzej  = Person.new
+    nthx     = Person.new
     monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board)
     monopoly.start_game
     monopoly.make_move(nthx, 4)
