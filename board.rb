@@ -10,6 +10,10 @@
         @fields << field
       end
 
+      def add_fields(count)
+        count.times { add_field(Field.new)}
+      end
+
       def start_field
         @fields[0]
       end

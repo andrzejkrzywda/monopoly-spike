@@ -24,4 +24,17 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly.make_move(andrzej, 0)
   end
 
+  def TODO_test_players_get_points_when_they_meet_friends
+    board = Board.new
+    board.add_fields(16)
+    andrzej  = Player.new
+    nthx     = Player.new
+    monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board)
+    monopoly.start_game
+    monopoly.make_move(nthx, 4)
+    monopoly.make_move(andrzej, 4)
+    assert_equal(50, monopoly.all_points(andrzej))
+
+  end
+
 end

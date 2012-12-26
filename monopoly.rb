@@ -30,8 +30,6 @@ module Monopoly
     def self.extended(user)
       @player_moves = []
       user.instance_variable_set("@player_moves",      @player_moves)
-
-      
     end
 
     def no_more_moves?
