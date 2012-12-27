@@ -7,6 +7,7 @@ include Monopoly::Board
 
 class MonopolyTest  < Test::Unit::TestCase
 
+
   def test_game_limits_moves_to_3
     board = Board.new
     board.add_field(Field.new)
@@ -59,6 +60,25 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly.make_move(andrzej)
     assert_equal(true, 2 <= board.field_index_of(andrzej))
     assert_equal(true, 12 >= board.field_index_of(andrzej))
+  end
+
+  def test_assign_properties_to_fields
+    board   = Board.new
+    board.add_fields(16)
+    andrzej = Person.new
+    nthx = Person.new
+    monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board)
+    monopoly.start_game
+    nike_shop = Property.new("Nike shop", 100, 42)
+    board.put_property_on(1, nike_shop)
+    monopoly.make_move(andrzej, 1)
+    andrzej.add_points(100)
+    monopoly.buy(andrzej, nike_shop)
+    assert_equal(0, monopoly.all_points(andrzej))
+    monopoly.make_move(andrzej, 1)
+    monopoly.make_move(nthx, 1)
+    assert_equal(42, monopoly.all_points(andrzej))
+    assert_equal(0, monopoly.all_points(nthx))
   end
 
 end

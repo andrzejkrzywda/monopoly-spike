@@ -26,6 +26,18 @@ module Monopoly
       if @board.more_players_on_the_same_field_as?(player)
         player.add_points(50)
       end
+      target_field = @board.player_field(player)
+      if target_field.has_property?
+        for player in target_field.owners do
+          player.add_points(target_field.points_when_friend_visits)
+        end
+      end
+    end
+
+    def buy(player, property)
+      player.pay(property.points_price)
+      player.add_property(property)
+      property.add_owner(player)
     end
 
     def give_move(from_player, to_player)
@@ -41,6 +53,7 @@ module Monopoly
   end
 
 
+
   module Player
 
     def player_moves
@@ -52,7 +65,7 @@ module Monopoly
     end
 
     def add_points(amount)
-      @points = points + 50
+      @points = points + amount
     end
 
     def no_more_moves?
@@ -69,6 +82,15 @@ module Monopoly
 
     def add_move
       player_moves << Move.new
+    end
+
+    def pay(points_price)
+      @points -= points_price
+    end
+
+    def add_property(property)
+      @properties ||= []
+      @properties << property
     end
 
   end

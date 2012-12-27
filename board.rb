@@ -48,12 +48,17 @@
         @fields[(@fields.index(field) + offset) % @fields.length]
       end
 
+      def put_property_on(position, property)
+        @fields[position].put_property(property)
+      end
+
     end
     
     class Field
 
       def initialize
         @players = []
+        @property = nil
       end
 
       def include?(player)
@@ -71,7 +76,41 @@
       def players_count
         @players.count
       end
+
+      def has_property?
+        @property != nil
+      end
+
+      def put_property(property)
+        @property = property
+      end
+
+      def owners
+        @property.owners
+      end
+
+      def points_when_friend_visits
+        @property.points_when_friend_visits
+      end
     end
- 
+
+    class Property
+      attr_reader :points_price, :points_when_friend_visits
+      def initialize(name, points_price, points_when_friend_visits)
+        @name                      = name
+        @points_price              = points_price
+        @points_when_friend_visits = points_when_friend_visits
+        @owners                    = []
+      end
+
+      def add_owner(owner)
+        @owners << owner
+      end
+
+      def owners
+        @owners
+      end
+
+    end
   end
 end

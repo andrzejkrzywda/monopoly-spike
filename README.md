@@ -12,3 +12,8 @@ v - random dice roll
 - assign property to fields
 - add cards
 - assign cards to fields
+
+
+
+
+check if player can buy the property (can afford it anc is on the right field)
