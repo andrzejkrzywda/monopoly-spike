@@ -17,6 +17,10 @@
         @fields.first
       end
 
+      def field_index_of(player)
+        @fields.index(player_field(player))
+      end
+
       def player_field(player)
         @fields.detect{|f| f.include?(player)}
       end

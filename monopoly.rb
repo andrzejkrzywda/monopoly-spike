@@ -1,4 +1,11 @@
 module Monopoly
+  
+  class DiceRoll
+    def self.roll_2
+      (1..6).to_a.shuffle[0] + (1..6).to_a.shuffle[0]
+    end
+  end
+
   class MonopolyPlayGameUseCase
     def initialize(players, board)
       @players = players
@@ -11,10 +18,11 @@ module Monopoly
       @players.each { |player| 3.times { player.add_move } }
     end
 
-    def make_move(player, dice_roll=0)
+    def make_move(player, dice_roll= (lambda { DiceRoll.roll_2 }).call )
       raise NoMoreMoves if player.no_more_moves?
       player.take_life
       @board.move_player_by(player, dice_roll)
+
       if @board.more_players_on_the_same_field_as?(player)
         player.add_points(50)
       end
@@ -53,12 +61,6 @@ module Monopoly
 
     def take_life
       player_moves.shift
-    end
-
-    def play(dice_roll=0)
-      raise NoMoreMoves if no_more_moves?
-      take_life
-      @game.move_player_by(self, dice_roll)
     end
 
     def give_move(friend)
