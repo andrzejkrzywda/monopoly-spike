@@ -1,7 +1,7 @@
 module Monopoly
   
   class DiceRoll
-    def self.roll_2
+    def roll_2
       (1..6).to_a.shuffle[0] + (1..6).to_a.shuffle[0]
     end
   end
@@ -18,7 +18,7 @@ module Monopoly
       @players.each { |player| 3.times { player.add_move } }
     end
 
-    def make_move(player, dice_roll= (lambda { DiceRoll.roll_2 }).call )
+    def make_move(player, dice_roll = DiceRoll.new.roll_2 )
       raise NoMoreMoves if player.no_more_moves?
       player.take_life
       @board.move_player_by(player, dice_roll)

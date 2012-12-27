@@ -49,7 +49,8 @@ class MonopolyTest  < Test::Unit::TestCase
     assert_equal(0, monopoly.all_points(andrzej))
     assert_equal(0, monopoly.all_points(nthx))
   end
-    def test_random_dice_roll
+  
+  def test_random_dice_roll
     board   = Board.new
     board.add_fields(16)
     andrzej = Person.new
@@ -58,7 +59,6 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly.make_move(andrzej)
     assert_equal(true, 2 <= board.field_index_of(andrzej))
     assert_equal(true, 12 >= board.field_index_of(andrzej))
-
   end
 
 end
