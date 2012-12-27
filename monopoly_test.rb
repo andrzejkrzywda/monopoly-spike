@@ -34,7 +34,20 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly.make_move(nthx, 4)
     monopoly.make_move(andrzej, 4)
     assert_equal(50, monopoly.all_points(andrzej))
+    assert_equal(0, monopoly.all_points(nthx))
+  end
 
+  def test_players_dont_get_points_when_they_dont_meet_friends
+    board   = Board.new
+    board.add_fields(16)
+    andrzej = Person.new
+    nthx    = Person.new
+    monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board)
+    monopoly.start_game
+    monopoly.make_move(nthx, 10)
+    monopoly.make_move(andrzej, 4)
+    assert_equal(0, monopoly.all_points(andrzej))
+    assert_equal(0, monopoly.all_points(nthx))
   end
 
 end

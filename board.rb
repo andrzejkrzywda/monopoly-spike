@@ -2,7 +2,6 @@
   module Board
     class Board
       def initialize
-        @player_position = {}
         @fields = []
       end
 
@@ -15,15 +14,15 @@
       end
 
       def start_field
-        @fields[0]
+        @fields.first
       end
 
       def player_field(player)
-        @player_position[player]
+        @fields.detect{|f| f.include?(player)}
       end
 
       def met_friends?(player)
-        true
+        player_field(player).players_count > 1
       end
 
       def set_initial_player_position(player)
@@ -31,11 +30,14 @@
       end
 
       def set_player_position(player, field)
-        @player_position[player] = field
+        field.add_player(player)
       end
 
       def move_player_by(player, number)
-        @player_position[player] = field_on_with_offset(@player_position[player], number)
+        old_field = player_field(player)
+        old_field.remove_player(player)
+        new_field = field_on_with_offset(old_field, number)
+        new_field.add_player(player)
       end
 
       def field_on_with_offset(field, offset)
@@ -45,6 +47,26 @@
     end
     
     class Field
+
+      def initialize
+        @players = []
+      end
+
+      def include?(player)
+        @players.include?(player)
+      end
+
+      def remove_player(player)
+        @players.delete(player)
+      end
+
+      def add_player(player)
+        @players << player
+      end
+
+      def players_count
+        @players.count
+      end
     end
  
   end
