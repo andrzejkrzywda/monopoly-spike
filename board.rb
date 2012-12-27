@@ -22,6 +22,10 @@
         @player_position[player]
       end
 
+      def met_friends?(player)
+        true
+      end
+
       def set_initial_player_position(player)
         set_player_position(player, start_field)
       end

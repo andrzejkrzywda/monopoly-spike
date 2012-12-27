@@ -24,7 +24,7 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly.make_move(andrzej, 0)
   end
 
-  def TODO_test_players_get_points_when_they_meet_friends
+  def test_players_get_points_when_they_meet_friends
     board = Board.new
     board.add_fields(16)
     andrzej  = Person.new
