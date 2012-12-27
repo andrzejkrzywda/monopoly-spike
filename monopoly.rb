@@ -15,7 +15,7 @@ module Monopoly
       raise NoMoreMoves if player.no_more_moves?
       player.take_life
       @board.move_player_by(player, dice_roll)
-      if @board.met_friends?(player)
+      if @board.more_players_on_the_same_field_as?(player)
         player.add_points(50)
       end
     end

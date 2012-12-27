@@ -21,7 +21,7 @@
         @fields.detect{|f| f.include?(player)}
       end
 
-      def met_friends?(player)
+      def more_players_on_the_same_field_as?(player)
         player_field(player).players_count > 1
       end
 
