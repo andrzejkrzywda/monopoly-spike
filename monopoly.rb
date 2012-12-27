@@ -27,7 +27,7 @@ module Monopoly
         player.add_points(50)
       end
       target_field = @board.player_field(player)
-      if target_field.has_property?
+      if target_field.has_any_property?
         for player in target_field.owners do
           player.add_points(target_field.points_when_friend_visits)
         end
@@ -35,9 +35,14 @@ module Monopoly
     end
 
     def buy(player, property)
-      player.pay(property.points_price)
-      player.add_property(property)
-      property.add_owner(player)
+      begin
+        raise CantBuyPropertyWithoutBeingOnTheField if ! @board.player_field(player).has_property?(property)
+        player.pay(property.points_price)
+        player.add_property(property)
+        property.add_owner(player)
+      rescue NotEnoughPointsToPay
+        raise CantAfford
+      end
     end
 
     def give_move(from_player, to_player)
@@ -50,6 +55,12 @@ module Monopoly
   end
 
   class NoMoreMoves < Exception
+  end
+
+  class NotEnoughPointsToPay < Exception
+  end
+
+  class CantBuyPropertyWithoutBeingOnTheField < Exception
   end
 
 
@@ -85,6 +96,7 @@ module Monopoly
     end
 
     def pay(points_price)
+      raise NotEnoughPointsToPay if points_price > @points
       @points -= points_price
     end
 

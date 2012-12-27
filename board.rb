@@ -77,8 +77,12 @@
         @players.count
       end
 
-      def has_property?
+      def has_any_property?
         @property != nil
+      end
+
+      def has_property?(property)
+        @property == property
       end
 
       def put_property(property)
