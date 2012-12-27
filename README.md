@@ -9,7 +9,8 @@ v - bonus for meeting other players
 v - bonus only for meeting friends
 v - random dice roll
 
-- assign property to fields
+v- assign property to fields
+
 - add cards
 - assign cards to fields
 
