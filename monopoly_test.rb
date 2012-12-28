@@ -26,8 +26,7 @@ class MonopolyTest  < Test::Unit::TestCase
   end
 
   def test_players_get_points_when_they_meet_friends
-    board = Board.new
-    board.add_fields(16)
+    board = Board.new(16)
     andrzej  = Person.new.extend(Player)
     nthx     = Person.new.extend(Player)
     board.set_player_position(andrzej, 0)

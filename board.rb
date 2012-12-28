@@ -1,8 +1,9 @@
  module Monopoly 
   module Board
     class Board
-      def initialize
+      def initialize(number_of_fields=0)
         @fields = []
+        add_fields(number_of_fields)
       end
 
       def add_field(field)
