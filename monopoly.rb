@@ -14,11 +14,29 @@ module Monopoly
     end
   end
 
+  class GiveBonusPointsToFriendsWhenVisitingTheirProperty
+    def apply(board, player)
+      target_field = board.player_field(player)
+      if target_field.has_any_property?
+        for player in target_field.owners do
+          player.add_points(target_field.points_when_friend_visits)
+        end
+      end
+    end
+  end
+
   class MonopolyPlayGameUseCase
-    def initialize(players, board)
+    def initialize(players, 
+                   board, 
+                   make_move_policies=[
+                    BonusForMeetingFriendsAtTheSameField.new,
+                    GiveBonusPointsToFriendsWhenVisitingTheirProperty.new
+                    ])
       @players = players
       @players.each { |player| player.extend(Player)}
       @board = board
+      @make_move_policies = make_move_policies
+        
     end
 
     def start_game
@@ -30,15 +48,7 @@ module Monopoly
       raise NoMoreMoves if player.no_more_moves?
       player.take_life
       @board.move_player_by(player, dice_roll)
-
-      BonusForMeetingFriendsAtTheSameField.new.apply(@board, player)
-
-      target_field = @board.player_field(player)
-      if target_field.has_any_property?
-        for player in target_field.owners do
-          player.add_points(target_field.points_when_friend_visits)
-        end
-      end
+      @make_move_policies.each {|p| p.apply(@board, player)}
     end
 
     def buy(player, property)
