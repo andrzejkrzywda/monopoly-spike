@@ -1,12 +1,14 @@
 require 'test/unit'
 require './monopoly'
 require './board'
+require './bonuses'
+require './dice_roller'
 
 include Monopoly
 include Monopoly::Board
+include Monopoly::Bonuses
 
 class MonopolyTest  < Test::Unit::TestCase
-
 
   def test_game_limits_moves_to_3
     board = Board.new

@@ -1,37 +1,10 @@
-module Monopoly
-  
-  class DiceRoller
-    def roll_2
-      (1..6).to_a.shuffle[0] + (1..6).to_a.shuffle[0]
-    end
-  end
-
-  class BonusForMeetingFriendsAtTheSameField
-    def apply(board, player)
-      if board.more_players_on_the_same_field_as?(player)
-        player.add_points(50)
-      end
-    end
-  end
-
-  class GiveBonusPointsToFriendsWhenVisitingTheirProperty
-    def apply(board, player)
-      target_field = board.player_field(player)
-      if target_field.has_any_property?
-        for player in target_field.owners do
-          player.add_points(target_field.points_when_friend_visits)
-        end
-      end
-    end
-  end
-
+module Monopoly  
   class MonopolyPlayGameUseCase
-    def initialize(players, board, make_move_policies=[])
+    def initialize(players, board, after_make_move_policies=[])
       @players = players
       @players.each { |player| player.extend(Player)}
       @board = board
-      @make_move_policies = make_move_policies
-        
+      @after_make_move_policies = after_make_move_policies
     end
 
     def start_game
@@ -43,7 +16,7 @@ module Monopoly
       raise NoMoreMoves if player.no_more_moves?
       player.take_life
       @board.move_player_by(player, dice_roll)
-      @make_move_policies.each {|p| p.apply(@board, player)}
+      @after_make_move_policies.each {|p| p.apply(@board, player)}
     end
 
     def buy(player, property)
@@ -60,7 +33,6 @@ module Monopoly
     def give_move(from_player, to_player)
       to_player.add_move
     end
-
   end
 
   class NoMoreMoves < Exception
