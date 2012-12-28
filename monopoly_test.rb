@@ -26,9 +26,9 @@ class MonopolyTest  < Test::Unit::TestCase
   end
 
   def test_players_get_points_when_they_meet_friends
-    board = Board.new(16)
-    andrzej  = Person.new.extend(Player)
-    nthx     = Person.new.extend(Player)
+    board   = Board.new(16)
+    andrzej = Person.new.extend(Player)
+    nthx    = Person.new.extend(Player)
     board.set_player_position(andrzej, 0)
     board.set_player_position(nthx, 0)
 
@@ -39,23 +39,20 @@ class MonopolyTest  < Test::Unit::TestCase
   end
 
   def test_players_dont_get_points_when_they_dont_meet_friends
-    board   = Board.new
-    board.add_fields(16)
-    andrzej = Person.new
-    nthx    = Person.new
-    monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board, [
-                    BonusForMeetingFriendsAtTheSameField.new])
-                    
-    monopoly.start_game
-    monopoly.make_move(nthx, 10)
-    monopoly.make_move(andrzej, 4)
+    board   = Board.new(16)
+    andrzej = Person.new.extend(Player)
+    nthx    = Person.new.extend(Player)
+    board.set_player_position(andrzej, 0)
+    board.set_player_position(nthx, 10)
+
+    BonusForMeetingFriendsAtTheSameField.new.apply(board, andrzej)
+
     assert_equal(0, andrzej.points)
     assert_equal(0, nthx.points)
   end
   
   def test_random_dice_roll
-    board   = Board.new
-    board.add_fields(16)
+    board   = Board.new(16)
     andrzej = Person.new
     monopoly = MonopolyPlayGameUseCase.new([andrzej], board)
     monopoly.start_game
@@ -65,21 +62,17 @@ class MonopolyTest  < Test::Unit::TestCase
   end
 
   def test_assign_properties_to_fields
-    board   = Board.new
-    board.add_fields(16)
-    andrzej = Person.new
-    nthx = Person.new
-    monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board, [
-                    GiveBonusPointsToFriendsWhenVisitingTheirProperty.new])
-    monopoly.start_game
+    board     = Board.new(16)
+    andrzej   = Person.new.extend(Player)
+    nthx      = Person.new.extend(Player)
     nike_shop = Property.new("Nike shop", 100, 42)
     board.put_property_on(1, nike_shop)
-    monopoly.make_move(andrzej, 1)
-    andrzej.add_points(100)
-    monopoly.buy(andrzej, nike_shop)
-    assert_equal(0, andrzej.points)
-    monopoly.make_move(andrzej, 1)
-    monopoly.make_move(nthx, 1)
+    nike_shop.add_owner(andrzej)
+
+    board.set_player_position(nthx, 1)
+
+    GiveBonusPointsToFriendsWhenVisitingTheirProperty.new.apply(board, nthx)
+
     assert_equal(42, andrzej.points)
     assert_equal(0, nthx.points)
   end
