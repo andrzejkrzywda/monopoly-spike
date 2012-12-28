@@ -1,4 +1,5 @@
-module Monopoly  
+module Monopoly 
+
   class MonopolyPlayGameUseCase
     def initialize(players, board, after_make_move_policies=[], buying_policies=[])
       @players = players

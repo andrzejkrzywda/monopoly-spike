@@ -5,6 +5,7 @@ require './bonuses'
 require './dice_roller'
 require './player'
 require './buying_policies'
+require './game_creator'
 
 include Monopoly
 include Monopoly::Board
@@ -88,9 +89,7 @@ class MonopolyTest  < Test::Unit::TestCase
     nike_shop = Property.new("Nike shop", 100, 42)
     board.put_property_on(1, nike_shop)
     board.set_player_position(andrzej, 0)
-    monopoly = MonopolyPlayGameUseCase.new([andrzej], board, [], [      
-        NothingToBuyOnThisFieldPolicy.new,
-      AlreadyBoughtPolicy.new, CantAffordPolicy.new])
+    monopoly = GameCreator.new.create_default_monopoly_game([andrzej], board)
     assert_raise(NothingToBuyOnThisField) { monopoly.buy(andrzej) }
 
     board.move_player_by(andrzej, 1)
