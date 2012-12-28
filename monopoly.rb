@@ -2,7 +2,6 @@ module Monopoly
   class MonopolyPlayGameUseCase
     def initialize(players, board, after_make_move_policies=[])
       @players = players
-      @players.each { |player| player.extend(Player)}
       @board = board
       @after_make_move_policies = after_make_move_policies
     end
@@ -35,25 +34,16 @@ module Monopoly
     end
   end
 
-  class NoMoreMoves < Exception
-  end
+  class NoMoreMoves < Exception; end
+  class NotEnoughPointsToPay < Exception; end
+  class CantBuyPropertyWithoutBeingOnTheField < Exception; end
 
-  class NotEnoughPointsToPay < Exception
-  end
-
-  class CantBuyPropertyWithoutBeingOnTheField < Exception
-  end
-
-
-
-  module Player
-
-    def player_moves
-      @player_moves ||= []      
-    end
-
-    def points
-      @points ||= 0
+  class Player
+    attr_reader :points
+    def initialize
+      @player_moves = []
+      @points = 0
+      @properties = []
     end
 
     def add_points(amount)
@@ -61,11 +51,11 @@ module Monopoly
     end
 
     def no_more_moves?
-      player_moves.length == 0
+      @player_moves.length == 0
     end
 
     def take_life
-      player_moves.shift
+      @player_moves.shift
     end
 
     def give_move(friend)
@@ -73,7 +63,7 @@ module Monopoly
     end
 
     def add_move
-      player_moves << Move.new
+      @player_moves << Move.new
     end
 
     def pay(points_price)
@@ -82,17 +72,11 @@ module Monopoly
     end
 
     def add_property(property)
-      @properties ||= []
       @properties << property
     end
 
   end
 
-  class Person
-  end
-
   class Move
   end
-
-
 end

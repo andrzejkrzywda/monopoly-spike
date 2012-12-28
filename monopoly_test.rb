@@ -13,8 +13,8 @@ class MonopolyTest  < Test::Unit::TestCase
   def test_game_limits_moves_to_3
     board = Board.new
     board.add_field(Field.new)
-    andrzej  = Person.new
-    nthx     = Person.new
+    andrzej  = Player.new
+    nthx     = Player.new
     monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board)
     monopoly.start_game
 
@@ -29,8 +29,8 @@ class MonopolyTest  < Test::Unit::TestCase
 
   def test_players_get_points_when_they_meet_friends
     board   = Board.new(16)
-    andrzej = Person.new.extend(Player)
-    nthx    = Person.new.extend(Player)
+    andrzej = Player.new
+    nthx    = Player.new
     board.set_player_position(andrzej, 0)
     board.set_player_position(nthx, 0)
 
@@ -42,8 +42,8 @@ class MonopolyTest  < Test::Unit::TestCase
 
   def test_players_dont_get_points_when_they_dont_meet_friends
     board   = Board.new(16)
-    andrzej = Person.new.extend(Player)
-    nthx    = Person.new.extend(Player)
+    andrzej = Player.new
+    nthx    = Player.new
     board.set_player_position(andrzej, 0)
     board.set_player_position(nthx, 10)
 
@@ -55,7 +55,7 @@ class MonopolyTest  < Test::Unit::TestCase
   
   def test_random_dice_roll
     board   = Board.new(16)
-    andrzej = Person.new
+    andrzej = Player.new
     monopoly = MonopolyPlayGameUseCase.new([andrzej], board)
     monopoly.start_game
     monopoly.make_move(andrzej)
@@ -65,8 +65,8 @@ class MonopolyTest  < Test::Unit::TestCase
 
   def test_assign_properties_to_fields
     board     = Board.new(16)
-    andrzej   = Person.new.extend(Player)
-    nthx      = Person.new.extend(Player)
+    andrzej   = Player.new
+    nthx      = Player.new
     nike_shop = Property.new("Nike shop", 100, 42)
     board.put_property_on(1, nike_shop)
     nike_shop.add_owner(andrzej)
