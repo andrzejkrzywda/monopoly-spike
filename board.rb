@@ -30,11 +30,15 @@
       end
 
       def set_initial_player_position(player)
-        set_player_position(player, start_field)
+        set_player_field(player, start_field)
       end
 
-      def set_player_position(player, field)
+      def set_player_field(player, field)
         field.add_player(player)
+      end
+
+      def set_player_position(player, position)
+        @fields[position].add_player(player)
       end
 
       def move_player_by(player, number)

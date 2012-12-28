@@ -26,12 +26,7 @@ module Monopoly
   end
 
   class MonopolyPlayGameUseCase
-    def initialize(players, 
-                   board, 
-                   make_move_policies=[
-                    BonusForMeetingFriendsAtTheSameField.new,
-                    GiveBonusPointsToFriendsWhenVisitingTheirProperty.new
-                    ])
+    def initialize(players, board, make_move_policies=[])
       @players = players
       @players.each { |player| player.extend(Player)}
       @board = board

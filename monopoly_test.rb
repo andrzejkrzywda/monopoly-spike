@@ -28,12 +28,13 @@ class MonopolyTest  < Test::Unit::TestCase
   def test_players_get_points_when_they_meet_friends
     board = Board.new
     board.add_fields(16)
-    andrzej  = Person.new
-    nthx     = Person.new
-    monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board)
-    monopoly.start_game
-    monopoly.make_move(nthx, 4)
-    monopoly.make_move(andrzej, 4)
+    andrzej  = Person.new.extend(Player)
+    nthx     = Person.new.extend(Player)
+    board.set_player_position(andrzej, 0)
+    board.set_player_position(nthx, 0)
+
+    BonusForMeetingFriendsAtTheSameField.new.apply(board, andrzej)
+
     assert_equal(50, andrzej.points)
     assert_equal(0, nthx.points)
   end
@@ -43,7 +44,9 @@ class MonopolyTest  < Test::Unit::TestCase
     board.add_fields(16)
     andrzej = Person.new
     nthx    = Person.new
-    monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board)
+    monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board, [
+                    BonusForMeetingFriendsAtTheSameField.new])
+                    
     monopoly.start_game
     monopoly.make_move(nthx, 10)
     monopoly.make_move(andrzej, 4)
@@ -67,7 +70,8 @@ class MonopolyTest  < Test::Unit::TestCase
     board.add_fields(16)
     andrzej = Person.new
     nthx = Person.new
-    monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board)
+    monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board, [
+                    GiveBonusPointsToFriendsWhenVisitingTheirProperty.new])
     monopoly.start_game
     nike_shop = Property.new("Nike shop", 100, 42)
     board.put_property_on(1, nike_shop)
