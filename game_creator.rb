@@ -1,6 +1,18 @@
+require './monopoly'
+require './board'
+require './bonuses'
+require './dice_roller'
+require './player'
+require './buying_policies'
+
+include Monopoly
+include Monopoly::Board
+include Monopoly::Bonuses
+include Monopoly::BuyingPolicies
+
 module Monopoly
   class GameCreator
-    def create_default_monopoly_game(players = [], board = Board.new(16))
+    def create_default_monopoly_game(players = [], board = Board::Board.new(16))
       MonopolyPlayGameUseCase.new(players, 
                                   board, 
                                   default_after_make_move_policies, 
