@@ -18,15 +18,12 @@ module Monopoly
       @after_make_move_policies.each {|p| p.apply(@board, player)}
     end
 
-    def buy(player, property)
-      begin
-        raise CantBuyPropertyWithoutBeingOnTheField if ! @board.player_field(player).has_property?(property)
-        player.pay(property.points_price)
-        player.add_property(property)
-        property.add_owner(player)
-      rescue NotEnoughPointsToPay
-        raise CantAfford
-      end
+    def buy(player, property)  
+      raise CantBuyPropertyWithoutBeingOnTheField if ! @board.player_field(player).has_property?(property)
+      raise CantAfford if points_price > @points
+      player.pay(property.points_price)
+      player.add_property(property)
+      property.add_owner(player)
     end
 
     def give_move(from_player, to_player)

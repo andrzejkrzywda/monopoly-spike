@@ -14,8 +14,9 @@ class PlayerTest  < Test::Unit::TestCase
   end
 
   def test_cant_afford
-    person = Player.new
-    person.add_points(10)
-    assert_raise(NotEnoughPointsToPay) { person.pay(20) }
+    player = Player.new
+    player.add_points(10)
+    player.pay(20)
+    assert_equal -10, player.points
   end
 end

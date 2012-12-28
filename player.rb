@@ -28,7 +28,6 @@ module Monopoly
     end
 
     def pay(points_price)
-      raise NotEnoughPointsToPay if points_price > @points
       @points -= points_price
     end
 
@@ -37,6 +36,4 @@ module Monopoly
     end
 
   end
-
-  class NotEnoughPointsToPay < Exception; end
 end
