@@ -80,4 +80,17 @@ class MonopolyTest  < Test::Unit::TestCase
     assert_equal(0, nthx.points)
   end
 
+  def test_buying
+    board   = Board.new(16)
+    andrzej = Player.new    
+    nike_shop = Property.new("Nike shop", 100, 42)
+    board.put_property_on(1, nike_shop)
+    board.set_player_position(andrzej, 0)
+    monopoly = MonopolyPlayGameUseCase.new([andrzej], board)
+    assert_raise(NothingToBuyOnThisField) { monopoly.buy(andrzej) }
+
+    board.move_player_by(andrzej, 1)
+    assert_raise(CantAfford) { monopoly.buy(andrzej) }
+  end
+
 end

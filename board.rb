@@ -60,6 +60,7 @@
     end
     
     class Field
+      attr_reader :property
 
       def initialize
         @players = []

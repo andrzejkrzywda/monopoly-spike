@@ -35,5 +35,9 @@ module Monopoly
       @properties << property
     end
 
+    def owns?(property)
+      @properties.include?(property)
+    end
+
   end
 end
