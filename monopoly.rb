@@ -6,6 +6,14 @@ module Monopoly
     end
   end
 
+  class BonusForMeetingFriendsAtTheSameField
+    def apply(board, player)
+      if board.more_players_on_the_same_field_as?(player)
+        player.add_points(50)
+      end
+    end
+  end
+
   class MonopolyPlayGameUseCase
     def initialize(players, board)
       @players = players
@@ -23,9 +31,8 @@ module Monopoly
       player.take_life
       @board.move_player_by(player, dice_roll)
 
-      if @board.more_players_on_the_same_field_as?(player)
-        player.add_points(50)
-      end
+      BonusForMeetingFriendsAtTheSameField.new.apply(@board, player)
+
       target_field = @board.player_field(player)
       if target_field.has_any_property?
         for player in target_field.owners do
