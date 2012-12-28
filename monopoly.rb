@@ -1,9 +1,10 @@
 module Monopoly  
   class MonopolyPlayGameUseCase
-    def initialize(players, board, after_make_move_policies=[])
+    def initialize(players, board, after_make_move_policies=[], buying_policies=[])
       @players = players
       @board = board
       @after_make_move_policies = after_make_move_policies
+      @buying_policies = buying_policies
     end
 
     def start_game
@@ -19,9 +20,9 @@ module Monopoly
     end
 
     def buy(player)
-      NothingToBuyOnThisFieldPolicy.new.apply(@board, player)
-      raise AlreadyBought if player.owns?(@board.player_field(player).property)
-      raise CantAfford if @board.player_field(player).property.points_price > player.points
+      current_field = @board.player_field(player)
+      @buying_policies.each {|policy| policy.apply(player, current_field)}
+
       player.pay(property.points_price)
       player.add_property(property)
       property.add_owner(player)
@@ -33,13 +34,5 @@ module Monopoly
   end
 
   class NoMoreMoves < Exception; end
-  class CantBuyPropertyWithoutBeingOnTheField < Exception; end
-  class NothingToBuyOnThisField < Exception; end
-  class CantAfford < Exception; end
 
-  class NothingToBuyOnThisFieldPolicy
-    def apply(board, player)
-      raise NothingToBuyOnThisField if ! board.player_field(player).has_any_property?
-    end
-  end
 end

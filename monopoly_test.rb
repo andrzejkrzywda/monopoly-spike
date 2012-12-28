@@ -4,10 +4,12 @@ require './board'
 require './bonuses'
 require './dice_roller'
 require './player'
+require './buying_policies'
 
 include Monopoly
 include Monopoly::Board
 include Monopoly::Bonuses
+include Monopoly::BuyingPolicies
 
 class MonopolyTest  < Test::Unit::TestCase
 
@@ -80,17 +82,24 @@ class MonopolyTest  < Test::Unit::TestCase
     assert_equal(0, nthx.points)
   end
 
-  def test_buying
+  def test_buying_not_possible
     board   = Board.new(16)
     andrzej = Player.new    
     nike_shop = Property.new("Nike shop", 100, 42)
     board.put_property_on(1, nike_shop)
     board.set_player_position(andrzej, 0)
-    monopoly = MonopolyPlayGameUseCase.new([andrzej], board)
+    monopoly = MonopolyPlayGameUseCase.new([andrzej], board, [], [      
+        NothingToBuyOnThisFieldPolicy.new,
+      AlreadyBoughtPolicy.new, CantAffordPolicy.new])
     assert_raise(NothingToBuyOnThisField) { monopoly.buy(andrzej) }
 
     board.move_player_by(andrzej, 1)
     assert_raise(CantAfford) { monopoly.buy(andrzej) }
+
+    andrzej.add_property(nike_shop)
+    andrzej.add_points(100)
+
+    assert_raise(AlreadyBought) { monopoly.buy(andrzej) }    
   end
 
 end
