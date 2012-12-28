@@ -34,8 +34,8 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly.start_game
     monopoly.make_move(nthx, 4)
     monopoly.make_move(andrzej, 4)
-    assert_equal(50, monopoly.all_points(andrzej))
-    assert_equal(0, monopoly.all_points(nthx))
+    assert_equal(50, andrzej.points)
+    assert_equal(0, nthx.points)
   end
 
   def test_players_dont_get_points_when_they_dont_meet_friends
@@ -47,8 +47,8 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly.start_game
     monopoly.make_move(nthx, 10)
     monopoly.make_move(andrzej, 4)
-    assert_equal(0, monopoly.all_points(andrzej))
-    assert_equal(0, monopoly.all_points(nthx))
+    assert_equal(0, andrzej.points)
+    assert_equal(0, nthx.points)
   end
   
   def test_random_dice_roll
@@ -74,11 +74,11 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly.make_move(andrzej, 1)
     andrzej.add_points(100)
     monopoly.buy(andrzej, nike_shop)
-    assert_equal(0, monopoly.all_points(andrzej))
+    assert_equal(0, andrzej.points)
     monopoly.make_move(andrzej, 1)
     monopoly.make_move(nthx, 1)
-    assert_equal(42, monopoly.all_points(andrzej))
-    assert_equal(0, monopoly.all_points(nthx))
+    assert_equal(42, andrzej.points)
+    assert_equal(0, nthx.points)
   end
 
 end

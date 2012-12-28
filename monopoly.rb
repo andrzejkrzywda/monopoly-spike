@@ -66,9 +66,6 @@ module Monopoly
       to_player.add_move
     end
 
-    def all_points(player)
-      player.points
-    end
   end
 
   class NoMoreMoves < Exception
