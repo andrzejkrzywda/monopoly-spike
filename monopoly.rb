@@ -35,48 +35,6 @@ module Monopoly
   end
 
   class NoMoreMoves < Exception; end
-  class NotEnoughPointsToPay < Exception; end
   class CantBuyPropertyWithoutBeingOnTheField < Exception; end
 
-  class Player
-    attr_reader :points
-    def initialize
-      @player_moves = []
-      @points = 0
-      @properties = []
-    end
-
-    def add_points(amount)
-      @points = points + amount
-    end
-
-    def no_more_moves?
-      @player_moves.length == 0
-    end
-
-    def take_life
-      @player_moves.shift
-    end
-
-    def give_move(friend)
-      friend.add_move
-    end
-
-    def add_move
-      @player_moves << Move.new
-    end
-
-    def pay(points_price)
-      raise NotEnoughPointsToPay if points_price > @points
-      @points -= points_price
-    end
-
-    def add_property(property)
-      @properties << property
-    end
-
-  end
-
-  class Move
-  end
 end

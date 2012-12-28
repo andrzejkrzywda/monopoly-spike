@@ -3,6 +3,7 @@ require './monopoly'
 require './board'
 require './bonuses'
 require './dice_roller'
+require './player'
 
 include Monopoly
 include Monopoly::Board

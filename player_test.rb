@@ -1,5 +1,5 @@
 require 'test/unit'
-require './monopoly'
+require './player'
 
 include Monopoly
 
