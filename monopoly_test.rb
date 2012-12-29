@@ -5,6 +5,7 @@ require './bonuses'
 require './dice_roller'
 require './player'
 require './buying_policies'
+require './join_game_rules'
 require './game_creator'
 
 include Monopoly
@@ -19,8 +20,9 @@ class MonopolyTest  < Test::Unit::TestCase
     board.add_field(Field.new)
     andrzej  = Player.new
     nthx     = Player.new
-    monopoly = MonopolyPlayGameUseCase.new([andrzej, nthx], board)
-    monopoly.start_game
+    monopoly = GameCreator.new.create_default_monopoly_game([], board)
+    monopoly.join(andrzej)
+    monopoly.join(nthx)
 
     3.times { monopoly.make_move(andrzej, 0) }
     assert_raises NoMoreMoves do
@@ -60,8 +62,8 @@ class MonopolyTest  < Test::Unit::TestCase
   def test_random_dice_roll
     board   = Board.new(16)
     andrzej = Player.new
-    monopoly = MonopolyPlayGameUseCase.new([andrzej], board)
-    monopoly.start_game
+    monopoly = GameCreator.new.create_default_monopoly_game([], board)
+    monopoly.join(andrzej)
     monopoly.make_move(andrzej)
     assert_equal(true, 2 <= board.field_index_of(andrzej))
     assert_equal(true, 12 >= board.field_index_of(andrzej))

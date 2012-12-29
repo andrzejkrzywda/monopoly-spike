@@ -4,6 +4,7 @@ require './bonuses'
 require './dice_roller'
 require './player'
 require './buying_policies'
+require './join_game_rules'
 
 include Monopoly
 include Monopoly::Board
@@ -13,10 +14,19 @@ include Monopoly::BuyingPolicies
 module Monopoly
   class GameCreator
     def create_default_monopoly_game(players = [], board = Board::Board.new(16))
-      MonopolyPlayGameUseCase.new(players, 
-                                  board, 
-                                  default_after_make_move_policies, 
-                                  default_buying_policies)
+      game = MonopolyPlayGameUseCase.new(board, 
+                                          default_join_game_rules,
+                                          default_after_make_move_policies, 
+                                          default_buying_policies)
+      players.each {|player| game.join(player)}
+      return game
+    end
+
+    def default_join_game_rules
+      [
+        AddInitialNumberOfLifes.new(3),
+        PutPlayerOnBoardInitialField.new
+      ]
     end
 
     def default_after_make_move_policies

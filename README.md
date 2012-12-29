@@ -11,6 +11,7 @@ v - random dice roll
 
 v- assign property to fields
 
+v - let people join after start
 - add cards
 - assign cards to fields
 

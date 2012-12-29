@@ -1,16 +1,15 @@
 module Monopoly 
 
   class MonopolyPlayGameUseCase
-    def initialize(players, board, after_make_move_policies=[], buying_policies=[])
-      @players = players
+    def initialize(board, join_game_rules=[], after_make_move_policies=[], buying_policies=[])
       @board = board
+      @join_game_rules = join_game_rules
       @after_make_move_policies = after_make_move_policies
       @buying_policies = buying_policies
     end
 
-    def start_game
-      @players.each { |player| @board.set_initial_player_position(player) }
-      @players.each { |player| 3.times { player.add_move } }
+    def join(player)
+      @join_game_rules.each {|rule| rule.apply(@board, player)}
     end
 
     def make_move(player, dice_roll = DiceRoller.new.roll_2 )
