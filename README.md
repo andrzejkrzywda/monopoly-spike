@@ -15,7 +15,8 @@ v - let people join after start
 - add cards
 - assign cards to fields
 
+- lifes are renewed every x minutes
 
 
 
-check if player can buy the property (can afford it anc is on the right field)
+v - check if player can buy the property (can afford it anc is on the right field)

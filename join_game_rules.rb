@@ -11,7 +11,7 @@ module Monopoly
     end
 
     def apply(board, player)
-      3.times { player.add_move } 
+      3.times { player.add_life } 
     end
   end
 end

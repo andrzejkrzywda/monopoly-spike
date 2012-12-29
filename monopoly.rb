@@ -13,7 +13,7 @@ module Monopoly
     end
 
     def make_move(player, dice_roll = DiceRoller.new.roll_2 )
-      raise NoMoreMoves if player.no_more_moves?
+      raise NoMoreLifes if player.no_more_lifes?
       player.take_life
       @board.move_player_by(player, dice_roll)
       @after_make_move_policies.each {|p| p.apply(@board, player)}
@@ -28,11 +28,11 @@ module Monopoly
       property.add_owner(player)
     end
 
-    def give_move(from_player, to_player)
-      to_player.add_move
+    def give_life(from_player, to_player)
+      to_player.add_life
     end
   end
 
-  class NoMoreMoves < Exception; end
+  class NoMoreLifes < Exception; end
 
 end

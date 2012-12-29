@@ -2,7 +2,7 @@ module Monopoly
   class Player
     attr_reader :points
     def initialize
-      @player_moves = 0
+      @lifes = 0
       @points = 0
       @properties = []
     end
@@ -11,20 +11,20 @@ module Monopoly
       @points += amount
     end
 
-    def no_more_moves?
-      @player_moves == 0
+    def no_more_lifes?
+      @lifes == 0
     end
 
     def take_life
-      @player_moves -= 1
+      @lifes -= 1
     end
 
-    def give_move(friend)
-      friend.add_move
+    def give_life(friend)
+      friend.add_life
     end
 
-    def add_move
-      @player_moves += 1
+    def add_life
+      @lifes += 1
     end
 
     def pay(points_price)

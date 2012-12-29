@@ -25,11 +25,11 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly.join(nthx)
 
     3.times { monopoly.make_move(andrzej, 0) }
-    assert_raises NoMoreMoves do
+    assert_raises NoMoreLifes do
       monopoly.make_move(andrzej, 0)
     end
 
-    monopoly.give_move(nthx, andrzej)
+    monopoly.give_life(nthx, andrzej)
     monopoly.make_move(andrzej, 0)
   end
 
