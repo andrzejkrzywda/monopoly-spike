@@ -15,22 +15,24 @@ include Monopoly::BuyingPolicies
 
 class MonopolyTest  < Test::Unit::TestCase
 
-  def test_game_limits_moves_to_3
-    board = Board.new
-    board.add_field(Field.new)
+  def test_initial_number_of_moves
     andrzej  = Player.new
-    nthx     = Player.new
-    monopoly = GameCreator.new.create_default_monopoly_game([], board)
-    monopoly.join(andrzej)
-    monopoly.join(nthx)
+    AddInitialNumberOfLifes.new.apply(nil, andrzej)
+    assert_equal 3, andrzej.lifes
+end
 
-    3.times { monopoly.make_move(andrzej) }
+  def test_make_move_costs_life
+    andrzej  = Player.new
+    andrzej.add_life
+    MoveCostsLife.new.apply(andrzej)
+    assert_equal 0, andrzej.lifes
+  end
+
+  def test_cant_move_when_no_lifes
+    andrzej  = Player.new
     assert_raises NoMoreLifes do
-      monopoly.make_move(andrzej)
+      MoveCostsLife.new.apply(andrzej)
     end
-
-    monopoly.give_life(nthx, andrzej)
-    monopoly.make_move(andrzej)
   end
 
   def test_players_get_points_when_they_meet_friends

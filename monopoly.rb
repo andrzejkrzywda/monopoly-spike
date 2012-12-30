@@ -19,8 +19,10 @@ module Monopoly
 
     def make_move(player)
       @before_make_move_rules.each {|rule| rule.apply(player)}
+      
       dice_roll = @dice_roller.roll_2
       @board.move_player_by(player, dice_roll)
+      
       @after_make_move_policies.each {|p| p.apply(@board, player)}
     end
 
