@@ -24,13 +24,13 @@ class MonopolyTest  < Test::Unit::TestCase
     monopoly.join(andrzej)
     monopoly.join(nthx)
 
-    3.times { monopoly.make_move(andrzej, 0) }
+    3.times { monopoly.make_move(andrzej) }
     assert_raises NoMoreLifes do
-      monopoly.make_move(andrzej, 0)
+      monopoly.make_move(andrzej)
     end
 
     monopoly.give_life(nthx, andrzej)
-    monopoly.make_move(andrzej, 0)
+    monopoly.make_move(andrzej)
   end
 
   def test_players_get_points_when_they_meet_friends

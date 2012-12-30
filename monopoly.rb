@@ -2,6 +2,7 @@ module Monopoly
 
   class MonopolyPlayGameUseCase
     def initialize(board, join_game_rules=[], after_make_move_policies=[], buying_policies=[])
+      @dice_roller = DiceRoller.new
       @board = board
       @join_game_rules = join_game_rules
       @after_make_move_policies = after_make_move_policies
@@ -12,9 +13,10 @@ module Monopoly
       @join_game_rules.each {|rule| rule.apply(@board, player)}
     end
 
-    def make_move(player, dice_roll = DiceRoller.new.roll_2 )
+    def make_move(player)
       raise NoMoreLifes if player.no_more_lifes?
       player.take_life
+      dice_roll = @dice_roller.roll_2
       @board.move_player_by(player, dice_roll)
       @after_make_move_policies.each {|p| p.apply(@board, player)}
     end
