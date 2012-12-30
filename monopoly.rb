@@ -1,10 +1,14 @@
 module Monopoly 
 
   class MonopolyPlayGameUseCase
-    def initialize(board, join_game_rules=[], after_make_move_policies=[], buying_policies=[])
+    def initialize(board, join_game_rules=[], 
+                   before_make_move_rules=[],
+                   after_make_move_policies=[], 
+                   buying_policies=[])
       @dice_roller = DiceRoller.new
       @board = board
       @join_game_rules = join_game_rules
+      @before_make_move_rules = before_make_move_rules
       @after_make_move_policies = after_make_move_policies
       @buying_policies = buying_policies
     end
@@ -14,8 +18,7 @@ module Monopoly
     end
 
     def make_move(player)
-      raise NoMoreLifes if player.no_more_lifes?
-      player.take_life
+      @before_make_move_rules.each {|rule| rule.apply(player)}
       dice_roll = @dice_roller.roll_2
       @board.move_player_by(player, dice_roll)
       @after_make_move_policies.each {|p| p.apply(@board, player)}
@@ -35,6 +38,5 @@ module Monopoly
     end
   end
 
-  class NoMoreLifes < Exception; end
 
 end
