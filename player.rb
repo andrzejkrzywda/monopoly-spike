@@ -1,6 +1,6 @@
 module Monopoly
   class Player
-    attr_reader :points, :lifes
+    attr_reader :points, :lifes, :properties
     def initialize
       @lifes = 0
       @points = 0

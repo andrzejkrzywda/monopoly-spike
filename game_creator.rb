@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'bundler/setup'
 require './monopoly'
 require './board'
 require './bonuses'

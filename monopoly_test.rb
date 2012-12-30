@@ -1,3 +1,5 @@
+#require 'rubygems'
+#require 'bundler/setup'
 require 'test/unit'
 require './monopoly'
 require './board'
@@ -6,7 +8,8 @@ require './dice_roller'
 require './player'
 require './buying_policies'
 require './join_game_rules'
-require './game_creator'
+require './make_move_rules'
+
 
 include Monopoly
 include Monopoly::Board
@@ -19,7 +22,7 @@ class MonopolyTest  < Test::Unit::TestCase
     andrzej  = Player.new
     AddInitialNumberOfLifes.new.apply(nil, andrzej)
     assert_equal 3, andrzej.lifes
-end
+  end
 
   def test_make_move_costs_life
     andrzej  = Player.new
@@ -61,15 +64,7 @@ end
     assert_equal(0, nthx.points)
   end
   
-  def test_random_dice_roll
-    board   = Board.new(16)
-    andrzej = Player.new
-    monopoly = GameCreator.new.create_default_monopoly_game([], board)
-    monopoly.join(andrzej)
-    monopoly.make_move(andrzej)
-    assert_equal(true, 2 <= board.field_index_of(andrzej))
-    assert_equal(true, 12 >= board.field_index_of(andrzej))
-  end
+
 
   def test_assign_properties_to_fields
     board     = Board.new(16)
@@ -87,22 +82,6 @@ end
     assert_equal(0, nthx.points)
   end
 
-  def test_buying_not_possible
-    board   = Board.new(16)
-    andrzej = Player.new    
-    nike_shop = Property.new("Nike shop", 100, 42)
-    board.put_property_on(1, nike_shop)
-    board.set_player_position(andrzej, 0)
-    monopoly = GameCreator.new.create_default_monopoly_game([andrzej], board)
-    assert_raise(NothingToBuyOnThisField) { monopoly.buy(andrzej) }
 
-    board.move_player_by(andrzej, 1)
-    assert_raise(CantAfford) { monopoly.buy(andrzej) }
-
-    andrzej.add_property(nike_shop)
-    andrzej.add_points(100)
-
-    assert_raise(AlreadyBought) { monopoly.buy(andrzej) }    
-  end
 
 end

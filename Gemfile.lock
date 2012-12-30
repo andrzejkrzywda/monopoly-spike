@@ -1,0 +1,10 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    aquarium (0.5.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  aquarium

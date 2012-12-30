@@ -30,6 +30,7 @@ module Monopoly
       current_field = @board.player_field(player)
       @buying_policies.each {|policy| policy.apply(player, current_field)}
 
+      property = current_field.property
       player.pay(property.points_price)
       player.add_property(property)
       property.add_owner(player)
@@ -38,6 +39,8 @@ module Monopoly
     def give_life(from_player, to_player)
       to_player.add_life
     end
+
+
   end
 
 
