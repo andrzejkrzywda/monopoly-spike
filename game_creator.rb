@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
+require 'aquarium'
 require './monopoly'
 require './board'
 require './bonuses'
@@ -14,6 +15,8 @@ include Monopoly::Board
 include Monopoly::Bonuses
 include Monopoly::BuyingPolicies
 
+include Aquarium::Aspects
+
 module Monopoly
   class GameCreator
     def create_default_monopoly_game(players = [], board = Board::Board.new(16))
@@ -23,12 +26,15 @@ module Monopoly
                                           default_after_make_move_policies, 
                                           default_buying_policies)
       players.each {|player| game.join(player)}
+      Aspect.new :before, methods: [:join], for_objects: [game] do |jp, game, player|
+        AddInitialNumberOfLifes.new.apply(nil, player)
+      end
       return game
     end
 
     def default_join_game_rules
       [
-        AddInitialNumberOfLifes.new(3),
+        #AddInitialNumberOfLifes.new(3),
         PutPlayerOnBoardInitialField.new
       ]
     end
