@@ -4,9 +4,11 @@ module Monopoly
     def initialize(board)
       @dice_roller = DiceRoller.new
       @board = board
+      @players = []
     end
 
     def join(player)
+      @players << player
     end
 
     def make_move(player)
