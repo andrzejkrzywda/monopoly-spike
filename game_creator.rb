@@ -17,9 +17,19 @@ include Monopoly::BuyingPolicies
 
 include Aquarium::Aspects
 
+def before(object, method, &block)
+  Aspect.new :before, methods: [method], for_objects: [object] do |*args|
+    block.call(args)
+  end
+end
+def after(object, method, &block)
+  Aspect.new :after, methods: [method], for_objects: [object] do |*args|
+    block.call(args)
+  end
+end
 module Monopoly
   class GameCreator
-    def create_default_monopoly_game(players = [], board = Board::Board.new(16))
+    def create_default_monopoly_game(board = Board::Board.new(16))
       game = MonopolyPlayGameUseCase.new(board)
       
       default_join_game_rules(game, board)
@@ -27,34 +37,31 @@ module Monopoly
       default_after_make_move_policies(game, board)
       default_buying_policies(game, board)
       
-
-      players.each {|player| game.join(player)}
-
       return game
     end
 
     def default_join_game_rules(game, board)
-      Aspect.new :before, methods: [:join], for_objects: [game] do |jp, game, player|
+      before game, :join do |jp, game, player|
         AddInitialNumberOfLifes.new.apply(board, player)
         PutPlayerOnBoardInitialField.new.apply(board, player)
       end
     end
 
     def default_before_make_move_rules(game)
-      Aspect.new :before, methods: [:make_move], for_objects: [game] do |jp, game, player|
+      before game, :make_move do |jp, game, player|
         MoveCostsLife.new.apply(player)
       end
     end
 
     def default_after_make_move_policies(game, board)
-      Aspect.new :after, methods: [:make_move], for_objects: [game] do |jp, game, player|
+      after game, :make_move do |jp, game, player|
         BonusForMeetingFriendsAtTheSameField.new.apply(board, player)
         GiveBonusPointsToFriendsWhenVisitingTheirProperty.new.apply(board, player)
       end
     end
 
     def default_buying_policies(game, board)
-      Aspect.new :before, methods: [:buy], for_objects: [game] do |jp, game, player|
+      before game, :buy do |jp, game, player|
         field = board.player_field(player)
         NothingToBuyOnThisFieldPolicy.new.apply(player, field)
         AlreadyBoughtPolicy.new.apply(player, field)
