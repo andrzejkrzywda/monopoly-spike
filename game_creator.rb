@@ -29,8 +29,9 @@ def after(object, method, &block)
 end
 module Monopoly
   class GameCreator
-    def create_default_monopoly_game(board = Board::Board.new(16))
-      dice_roller = DiceRoller.new
+    def create_default_monopoly_game(board = Board::Board.new(16), 
+                                     dice_roller=DiceRoller.new)
+      dice_roller = dice_roller
       game = MonopolyPlayGameUseCase.new(board, dice_roller)
       
       default_join_game_rules(game, board)

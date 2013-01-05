@@ -2,6 +2,18 @@ require 'test/unit'
 require './game_creator'
 
 class GameCreatorTest  < Test::Unit::TestCase
+
+  def test_fake_dice_roll
+    board   = Board.new(16)
+    andrzej = Player.new
+    cheater_dice_roller = CheaterDiceRoller.new
+    cheater_dice_roller.next_roll_will_be(4)
+    monopoly = GameCreator.new.create_default_monopoly_game(board, cheater_dice_roller)
+    monopoly.join(andrzej)
+    monopoly.make_move(andrzej)
+    assert_equal(4, board.field_index_of(andrzej))
+  end
+
   def test_random_dice_roll
     board   = Board.new(16)
     andrzej = Player.new
