@@ -1,7 +1,7 @@
 module Monopoly 
 
   class MonopolyPlayGameUseCase
-    def initialize(board, dice_roller = DiceRoller.new)
+    def initialize(board, dice_roller)
       @dice_roller = dice_roller
       @board = board
       @players = []

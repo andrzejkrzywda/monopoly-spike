@@ -30,7 +30,8 @@ end
 module Monopoly
   class GameCreator
     def create_default_monopoly_game(board = Board::Board.new(16))
-      game = MonopolyPlayGameUseCase.new(board)
+      dice_roller = DiceRoller.new
+      game = MonopolyPlayGameUseCase.new(board, dice_roller)
       
       default_join_game_rules(game, board)
       default_before_make_move_rules(game)
