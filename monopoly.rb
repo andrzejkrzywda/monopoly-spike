@@ -1,8 +1,8 @@
 module Monopoly 
 
   class MonopolyPlayGameUseCase
-    def initialize(board)
-      @dice_roller = DiceRoller.new
+    def initialize(board, dice_roller = DiceRoller.new)
+      @dice_roller = dice_roller
       @board = board
       @players = []
     end
@@ -24,7 +24,7 @@ module Monopoly
       property.add_owner(player)
     end
 
-    def give_life(from_player, to_player)
+    def give_life_from_player(from_player, to_player)
       to_player.add_life
     end
   end

@@ -16,6 +16,10 @@ v - let people join after start
 - assign cards to fields
 
 - lifes are renewed every x minutes
+-- there's max of y lives renewed this way
+- friends can give each other lives
+-- no more than one life every x minutes
+
 
 
 
